@@ -12,11 +12,12 @@ from tapy import Indicators
 from datetime import datetime
 
 
+###НАСТРОЙКА ПАРАМЕТРОВ ТОРГОВОЙ СЕССИИ###
 
-# spot - для спотовой торговли , linear - для деривативов( беcсрочный фьючерс на BTC )
+# spot - для спотовой торговли , linear - для деривативов (к примеру бессрочный фьючерс на биткойн - BTCUSDT)
 CATEGORY = '...'
 
-# наименование торгового инструмента (ETHUSDT)
+# наименование торгового инструмента (к примеру ETHUSDT)
 SYMBOL = '...'
 
 # 1 - для торговли на минутном таймфрейме , 5 - на пятиминутном , 15 - на пятнадцати минутном и т.д.
@@ -39,22 +40,23 @@ MARKETPOSITION = 0
 # Если не получилось осуществить вход в сделку, бот будет пробовать снова NUM_REPEAT раз.
 NUM_REPEAT = 5
 
-# файл с апи ключами.
-from keys import a_k 
-from keys import a_sk
+# Указываем апи-ключи ByBit
+a_k = ...
+a_sk = ...
 
 
 
 total_quotes = [ ] 
 
-
+### ТОРГОВЫЙ РОБОТ ###
                
 async def session_state(): 
     MARKETPOSITION = 0 
     while True :
         clock = math.trunc(time.time() ) 
         dt_object = datetime.utcfromtimestamp(clock)
-        
+
+        # В КОНЦЕ КАЖДОЙ МИНУТЫ НА 59 СЕКУНДЕ СОБИРАЕМ ИНФОРМАЦИЮ О СВЕЧАХ И АНАЛИЗИРУЕМ СТОИТ ЛИ ВХОДИТЬ В СДЕЛКУ
         if dt_object.minute % INTERVAL == INTERVAL - 1 and dt_object.second == 59:
             
             t1 = time.time()
